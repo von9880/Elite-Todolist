@@ -8,7 +8,7 @@ const TASK_STATES = {
 const DEFAULT_TASK_NAME =   "New Task";
 const DEFAULT_DESCRIPTION = "";
 const DEFAULT_STATUS =      TASK_STATES.TODO;
-const DEFAULT_POSITION =    1;
+const DEFAULT_POSITION =    0;
 const DEFAULT_FINISHED =    false;
 
 class Task {
@@ -58,7 +58,21 @@ class Task {
         return `Name: ${this.name}\n Description: ${this.description}\n Status: ${this.status}\n Position: ${this.position}\n Is Finished: ${this.finished}`;
     }
 
+
+    static fromJSON(data) {
+        return new Task(
+            data.name, 
+            data.description, 
+            data.status, 
+            data.position, 
+            data.finished
+        );
+    }
+}
     
 
+
+
+
     
-}
+
