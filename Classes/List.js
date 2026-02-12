@@ -82,13 +82,20 @@ class List{
         this.removeTask(task);
     }
 
+    
+
+    deleteListButtons(){
+        this.addTaskButton.remove()
+        this.deleteListButton.remove();
+    }
+    
     buttonPressedAddTask(){
         this.addTask(new Task())
-        //refresh screen function here
+        refresh()
     }
 
-    deleteList(){
-        this.addTaskButton.remove()
+    buttonPressedDeleteList(){
+        this.deleteListButtons()
         listArray.splice(listArray.indexOf(this), listArray.indexOf(this)>= 0 ? 1 : 0);
         refresh()
     }
@@ -150,14 +157,15 @@ class List{
         // fill(255);
         this.addTaskButton = createButton(`Add Task`);
         this.addTaskButton.position(x + 10, 20);
-        this.addTaskButton.mousePressed(() => this.deleteList());
+        this.addTaskButton.mousePressed(() => this.buttonPressedAddTask());
 
         // red box for delete button maybe?
         // fill(150, 0, 0);
         // rect(x + 370, 20, 20, 20)
         // fill(255);
-        let redButton = createButton(`Delete List`);
-        redButton.position(x + 310, 20);
+        this.deleteListButton = createButton(`Delete List`);
+        this.deleteListButton.position(x + 310, 20);
+        this.deleteListButton.mousePressed(() => this.buttonPressedDeleteList());
 
         // title
         textAlign(CENTER, CENTER);
@@ -166,15 +174,30 @@ class List{
         fill(255);
 
         // show all tasks in this list
+        if(localStorage.getItem("listsInit") == "no"){
+            this.initTask();
+        }else{
+            this.refreshTask()
+        }
+        
+    }
+
+    initTask(){
         let y = 70;
-        for (const each of this.listStorage) {
+        for (let each of this.listStorage) {
+            each.show(x + 10, y);
+            y += 130;
+        }
+        //localStorage.setItem("listsInit", "yes");
+    }
+
+    refreshTask(){
+        let y = 70;
+        for (let each of this.listStorage) {
+            each.deleteTaskButtons();
             each.show(x + 10, y);
             y += 130
         }
-    }
-
-    button(){
-        
     }
 
 }

@@ -52,10 +52,16 @@ class Task {
         let normDirection = direction / Math.abs(direction); //wizard spell to normalize the direction to either 1 or -1 (in theory)
         this.setPosition(normDirection);
     }
+    
 
     //methods
     toString() {
         return `Name: ${this.name}\n Description: ${this.description}\n Status: ${this.status}\n Position: ${this.position}\n Is Finished: ${this.finished}`;
+    }
+
+    deleteTaskButtons(){
+        this.markTaskDoneButton.remove();
+        this.deleteTaskButton.remove();
     }
 
     show(x, y) {
@@ -64,14 +70,21 @@ class Task {
         rect(x, y, 380, 120, 10);
 
         // green box which represents mark as done button maybe?
-        fill(0, 150, 0);
-        rect(x + 10, y + 10, 20, 20)
-        fill(255);
+        // fill(0, 150, 0);
+        // rect(x + 10, y + 10, 20, 20)
+        // fill(255);
+        this.markTaskDoneButton = createButton(`Mark Done`);
+        this.markTaskDoneButton.position(x + 10, y+10);
+        //this.markTaskDoneButton.mousePressed(() => /*put mark task function here*/ console.log("needs function"));
 
         // red box for delete button maybe?
-        fill(150, 0, 0);
-        rect(x + 350, y + 10, 20, 20)
-        fill(255);
+        // fill(150, 0, 0);
+        // rect(x + 350, y + 10, 20, 20)
+        // fill(255);
+
+        this.deleteTaskButton = createButton(`Delete Task`);
+        this.deleteTaskButton.position(x + 285, y+10);
+        //this.deleteTaskButton.mousePressed(() => );
 
         // text slop
         textAlign(CENTER, CENTER);
