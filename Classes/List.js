@@ -184,7 +184,7 @@ class List{
 
         // show all tasks in this list
         if(this.listStorage.length > 0){
-            console.log("show")
+            //console.log("show")
             this.showTask()
         }
         
