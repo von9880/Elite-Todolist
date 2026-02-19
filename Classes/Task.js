@@ -134,11 +134,13 @@ class Task {
     deleteTaskButtons(){
         this.markTaskDoneButton.remove();
         this.deleteTaskButton.remove();
+        saveAllLists();
     }
 
     buttonPressedMarkDone(){
         this.setCompleted();
         refresh();
+        saveAllLists();
     }
 
     buttonPressedDelete(){
@@ -146,6 +148,7 @@ class Task {
         this.deleteTaskButtons()
         list.removeTask(this);
         refresh();
+        saveAllLists();
     }
 
     //gets the list that the task is in

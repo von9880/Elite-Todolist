@@ -32,10 +32,7 @@ function setup() {
   // listArray.push(list1);  
 
 
-  // list0.pushToLocalStorage("0");
-  // list1.pushToLocalStorage("1") 
   //initList();
-
 }
 
 
@@ -48,15 +45,11 @@ function draw() {
   }
 }
 
-
-//i could not get this to work so i was thinking of writing a save all lists funtion aka just lines 55- 57 and calling it anytime we mutate a list object
-
-// window.addEventListener("beforeunload", function () {
-//     for(let i = 0; i < listArray.length; i++){
-//     listArray[i].pushToLocalStorage(i.toString());
-//   }
-// });
-
+function saveAllLists(){
+  for(let i = 0; i < listArray.length; i++){
+    listArray[i].pushToLocalStorage(i.toString());
+  }
+}
 
 
 

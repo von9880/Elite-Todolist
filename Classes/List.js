@@ -92,25 +92,30 @@ class List{
     deleteListButtons(){
         this.addTaskButton.remove()
         this.deleteListButton.remove();
+        saveAllLists();
     }
     
     buttonPressedAddTask(){
         this.addTask(this.getNewTask())
         //this.addTask(new Task())
         refresh();
+        saveAllLists();
     }
 
     deleteTaskButtons(){
         for (let each of this.listStorage) {
             each.deleteTaskButtons();
         }
+        saveAllLists();
     }
 
     buttonPressedDeleteList(){
         this.deleteListButtons()
         this.deleteTaskButtons()
+        localStorage.clear();
         listArray.splice(listArray.indexOf(this), listArray.indexOf(this)>= 0 ? 1 : 0);
         refresh();
+        saveAllLists();
     }
 
     toString(){
