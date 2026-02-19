@@ -30,8 +30,6 @@ class List{
         // set the position of the task
         task.setPosition(this.listStorage.length - 1);
 
-        
-
     }
 
     removeTask(task){
@@ -185,6 +183,11 @@ class List{
         let y = 70;
         for (let each of this.listStorage) {
             each.show(x + 10, y);
+            y += 130;
+        }
+        y = 70;
+        for (let each of this.listStorage) {
+            each.showTaskMenu()
             y += 130;
         }
     }
