@@ -47,6 +47,12 @@ class List{
         // ^ i dont really think we should, this works fine
     }
 
+    getNewTask(){
+        let name =  prompt("Input the task name.");
+        let desc = prompt("Input the tasks description.");
+        return new Task(name, desc);
+    }
+
     //swap the first index with the second index
     swapIndex(firstIndex, secondIndex){
         let temp = this.listStorage[firstIndex]
