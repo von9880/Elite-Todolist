@@ -1,7 +1,8 @@
 const TASK_STATES = {
     TODO: "Todo",
-    ARCHIVED: "Archived",
+    DOING: "Doing",
     DONE: "Done",
+    ARCHIVED: "Archived",
     DELETED: "Deleted"
 }
 
@@ -11,6 +12,31 @@ const DEFAULT_DESCRIPTION = "";
 const DEFAULT_STATUS      = TASK_STATES.TODO;
 const DEFAULT_POSITION    = 0;
 const DEFAULT_FINISHED    = false;
+
+//text sizes
+const NAME_SIZE           = 25
+const DESC_SIZE           = 16
+const STATUS_SIZE         = 16
+
+//text font
+const TEXT_FONT           = "Courier New" //TODO: change the font to something thats actually good (this is just one i picked randomly)
+
+//colors, lots of colors
+const BACKGROUND_COLOR    = new Color(255, 255, 255)
+const NAME_COLOR          = new Color(0,   0,   0)
+const DESC_COLOR          = new Color(100, 100, 100)
+const WHY_IS_THIS_HERE    = new Color(255, 255, 255)
+
+const STROKE_COLOR        = new Color(100, 230, 255)
+const TODO_COLOR          = new Color(255, 0,   0)
+const DOING_COLOR         = new Color(255, 255, 0)
+const DONE_COLOR          = new Color(0,   255, 0)
+
+const STATUS_COLORS       = {
+    Todo: TODO_COLOR,
+    Doing: DOING_COLOR,
+    Done: DONE_COLOR,
+}
 
 //confirm button settings (offsets so far)
 const CONFIRM_X_OFFSET    = 10;
@@ -26,13 +52,18 @@ const TEXT_X_PADDING      = 0;   //not used yet
 const TEXT_Y_OFFSET       = 0;   //not used yet
 const TEXT_Y_PADDING      = 30;
 
+//id settings
+const ID_MIN              = 1
+const ID_MAX              = 99999
+
 class Task {
     constructor(name, desc, status, position) { 
         this.name        = name     || DEFAULT_TASK_NAME;
         this.description = desc     || DEFAULT_DESCRIPTION;
-        this.status =      status   || DEFAULT_STATUS;
-        this.position =    position || DEFAULT_POSITION;
-        this.finished =                DEFAULT_FINISHED;
+        this.status      = status   || DEFAULT_STATUS;
+        this.position    = position || DEFAULT_POSITION;
+        this.finished    =             DEFAULT_FINISHED;
+        this.Id          =             GenerateId()
 
         this.markTaskDoneButton = createButton(`Mark Done`);
         this.markTaskDoneButton.hide();
@@ -102,6 +133,7 @@ class Task {
     deleteTaskButtons(){
         this.markTaskDoneButton.remove();
         this.deleteTaskButton.remove();
+        saveAllLists();
     }
 
      buttonPressedMarkDone(){
@@ -120,14 +152,16 @@ class Task {
         }
         console.log(this.id + " was marked as done");
         //refresh();
+        refresh();
+        saveAllLists();
     }
 
     buttonPressedDelete(){
         let list = this.getListTask();
         this.deleteTaskButtons();
         list.removeTask(this);
-        console.log(this.id + " was deleted");
-        //refresh();
+        refresh();
+        saveAllLists();
     }
 
     //gets the list that the task is in
@@ -143,6 +177,8 @@ class Task {
     show(x, y) {
 
         // main box
+        strokeWeight(5)
+        stroke(STROKE_COLOR.getColor())
         rect(x, y, 380, 120, 10);
 
         // sets pos of buttons        
@@ -153,17 +189,26 @@ class Task {
         this.markTaskDoneButton.show();
         this.deleteTaskButton.show();
 
+        strokeWeight(0)
         // text slop
+        textFont(TEXT_FONT)
+        //name
         textAlign(CENTER, CENTER);
-        fill(0);
-        textSize(18);
+        fill(NAME_COLOR.getColor());
+        textSize(NAME_SIZE);
         text(this.name, x + TEXT_X_OFFSET, y + TEXT_Y_PADDING);
-        textSize(12);
-        text(this.description, x + TEXT_X_OFFSET, y + TEXT_Y_PADDING * 2.2);
-        if (this.status === "Todo") fill(255, 0, 0);
-        if (this.status === "Done") fill(0, 255, 0);
-        text(this.status, x + TEXT_X_OFFSET, y + TEXT_Y_PADDING * 3.25);
-        fill(255);
+
+        //desc
+        fill(DESC_COLOR.getColor());
+        textSize(DESC_SIZE);
+        text(this.description, x + TEXT_X_OFFSET, y + TEXT_Y_PADDING * 2);
+
+        //status
+        fill(STATUS_COLORS[this.status].getColor() || new Color(0,0,0).getColor());
+        textSize(STATUS_SIZE)
+        text(this.status, x + TEXT_X_OFFSET, y + TEXT_Y_PADDING * 3);
+
+        fill(WHY_IS_THIS_HERE.getColor()); //im confused on why were filling with white here lol (might be p5js jank)
     }
 
     static fromJSON(data) {
@@ -172,7 +217,8 @@ class Task {
             data.description, 
             data.status, 
             data.position, 
-            data.finished
+            data.finished,
+            data.Id
         );
     }
 
@@ -183,7 +229,31 @@ class Task {
             description: this.description,
             status: this.status,
             position: this.position,
-            finished: this.finished
+            finished: this.finished,
+            Id: this.Id
         };
     }
+}
+
+let generatedIds = {} //array to store already generated ids (avoids the low chance of getting the same id twice)
+//Generates a random id for the task (probably redundant)
+function GenerateId() {
+    let generatedId
+    let idValid = false
+
+    while (!idValid) {
+        generatedId = Math.floor(Math.random() * ID_MAX) + ID_MIN
+        
+        //extra code to make it loop back around if the id is already created (too many lines for such an unlikely problem)
+        idValid = true
+        for (let id in generatedIds) {
+            if (!(rand == id)) {
+                console.warn("ID is already created!")
+                continue
+            }
+            idValid = false
+        }
+    }
+
+    return generatedId
 }
