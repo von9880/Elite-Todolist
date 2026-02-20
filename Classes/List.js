@@ -25,11 +25,7 @@ class List{
     }
 
 
-    getNewTask(){
-        let name =  prompt("Input the task name.");
-        let desc = prompt("Input the tasks description.");
-        return new Task(name, desc);
-    }
+
 
     //Adds Task object to storage in List object.
     addTask(task){
@@ -182,7 +178,11 @@ class List{
 
         //sets pos of buttons
         this.addTaskButton.position(x + 10, verticalOffsetTop + 10);
-        this.deleteListButton.position(x + 310, verticalOffsetTop + 10);
+        this.deleteListButton.position(x + 290, verticalOffsetTop + 10);
+
+        styleButton(this.addTaskButton);
+        styleButton(this.deleteListButton); 
+
 
         //shows buttons
         this.addTaskButton.show();
@@ -205,7 +205,6 @@ class List{
     }
 
     showTask(y){
-    
         let taskSpacing = 150;// has to be < 130
         for (let each of this.listStorage) {
             each.show(x + 10, y);
