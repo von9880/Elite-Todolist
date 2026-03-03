@@ -142,7 +142,6 @@ class Menu {
     }
 
     closeMenu() {
-        console.log(this.parent instanceof Task);
         if(this.parent instanceof Task){
             this.taskMenuOpen = false;
             this.hideTaskMenuButtons();
@@ -157,13 +156,24 @@ class Menu {
     }
 
     buttonPressedMenu() {
-        if (!this.taskMenuOpen) {
-            hideAllMenus()
-            this.taskMenuOpen = true;
-            return;
-        } else if (this.taskMenuOpen) {
-            this.closeMenu();
+        if(this.parent instanceof Task){
+           if (!this.taskMenuOpen) {
+                hideAllMenus()
+                this.taskMenuOpen = true;
+                return;
+            } else if (this.taskMenuOpen) {
+                this.closeMenu();
+            } 
+        }else if(this.parent instanceof List){
+            if (!this.listMenuOpen) {
+                hideAllMenus()
+                this.listMenuOpen = true;
+                return;
+            } else if (this.listMenuOpen) {
+                this.closeMenu();
+            } 
         }
+        
 
     }
 
@@ -178,9 +188,9 @@ class Menu {
 
     showTaskMenu() {
 
-        // if (!this.listMenuOpen) {
-        //     return;
-        // }
+         if (!this.taskMenuOpen) {
+             return;
+         }
 
         const pos = { x: this.x, y: this.y };
 
