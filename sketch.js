@@ -49,7 +49,7 @@ function draw() {
   if (theme === "default") {
     background(bgColor);
   } else if (theme === "dark") {
-    background(bgColor.toDarkMode());
+    background(0);
   }
   showLists();
   menuBar.show();
