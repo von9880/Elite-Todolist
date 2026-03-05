@@ -1,7 +1,9 @@
 class ArchiveList extends List {
     constructor() {
         super("Archive");
-        
+        this.deleteListButton = createButton(`Delete List`);
+        this.deleteListButton.hide();
+        this.deleteListButton.mousePressed(() => this.buttonPressedDeleteList());
     }
 
 
@@ -21,6 +23,15 @@ class ArchiveList extends List {
 
         
         rect(x, verticalOffsetTop, 400, windowHeight - verticalOffsetBottom, 15);
+
+        //sets pos of buttons
+        this.deleteListButton.position(x + 290, verticalOffsetTop + 10);
+
+        styleButton(this.deleteListButton); 
+
+
+        //shows buttons
+        this.deleteListButton.show();
 
         // title
         
@@ -51,5 +62,27 @@ class ArchiveList extends List {
             this.showTasks(taskPos);
         }
     
+    }
+
+    deleteListButtons(){
+        this.deleteListButton.remove();
+        saveAllLists();
+    }
+
+    deleteTaskButtons() {
+        for (let task of this.getStorage()) {
+            task.menu.deleteTaskButtons();
+        }
+        saveAllLists();
+    }
+
+    buttonPressedDeleteList(){
+        this.deleteListButtons();
+        this.deleteTaskButtons();
+        localStorage.clear();
+        listArray.splice(listArray.indexOf(this), listArray.indexOf(this) >= 0 ? 1 : 0);
+        hideAllMenus()
+        refresh();
+        saveAllLists();
     }
 }
